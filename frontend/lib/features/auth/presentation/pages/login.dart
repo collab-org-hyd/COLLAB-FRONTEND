@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
 
               const Text(
                 "Your productivity companion",
@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 40),
 
               /// Welcome Text
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Welcome back",
@@ -205,9 +205,9 @@ class LoginScreen extends StatelessWidget {
               const Spacer(),
 
               /// Sign Up
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text("Don't have an account? "),
                   Text(
                     "Sign up",
