@@ -1,1 +1,8 @@
-given the path of my api client D:\COLLAB\COLLAB-FRONTEND\frontend\lib\core\network\api_client.dart, Unable to get request
+curl -X 'POST' \
+  'https://collab-backend-hp3t.onrender.com/auth/login' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "email": "asdas@asda.com",
+  "password": "asdas@"
+}'

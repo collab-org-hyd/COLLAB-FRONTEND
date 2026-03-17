@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/core/constants/common_style.dart';
 import 'package:frontend/core/constants/api_constants.dart';
 import 'package:frontend/core/network/api_client.dart';
+import 'package:frontend/features/auth/presentation/pages/existingUserLogin.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -85,7 +86,39 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: () async {
                     print('Email: ${_emailController.text}');
-                    await ApiClient.checkEmail(_emailController.text);
+                    final response =
+                        await ApiClient.checkEmail(_emailController.text);
+
+                    if (response != null) {
+                      print('response is not null');
+                      print('this is the status:${response['status']}');
+                      final bool exists = response['status'] ?? false;
+
+                      if (exists) {
+                        // User exists - navigate to existing user login
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ExistingUserLoginScreen(userMail: _emailController.text),
+                          ),
+                        );
+                      } else {
+                        // New user - show message or navigate to registration
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'Email not registered. Please sign up.')),
+                        );
+                      }
+                    } else {
+                      // API error
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'Failed to check email. Please try again.')),
+                      );
+                    }
                   },
                   child:
                       Text(AppStrings.continueBtn, style: AppTextStyles.button),
