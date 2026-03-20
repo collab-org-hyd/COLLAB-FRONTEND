@@ -111,36 +111,53 @@ class _LoginScreenState extends State<LoginScreen> {
                           barrierDismissible: false,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text('Email Not Found'),
+                              title: const Center(
+                                  child: Text(
+                                'Email Not Found',
+                              )),
                               content: const Text(
                                   'This email is not registered. Would you like to sign up or try again?'),
                               actions: [
-                                Column(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text("Try Again",
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .stretch, // Makes buttons full width
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: TextButton.styleFrom(
                                           backgroundColor: Colors.black,
-                                          style: AppTextStyles.button),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        // Navigate to signup screen
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => SignupScreen(
-                                                userMail:
-                                                    _emailController.text),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text('Sign Up'),
-                                    ),
-                                  ],
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: Text("Try Again",
+                                            style: AppTextStyles.button),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SignupScreen(
+                                                      userMail: _emailController
+                                                          .text),
+                                            ),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: const Text('Sign Up'),
+                                      ),
+                                    ],
+                                  ),
                                 )
                               ],
                             );

@@ -84,6 +84,7 @@ class ApiClient {
   }
 
   static Future<Map<String, dynamic>?> registerUser({
+    required String username,
     required String email,
     required String password,
     required String name,
@@ -99,9 +100,11 @@ class ApiClient {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
+          'username': username,
           'email': email,
           'password': password,
-          'name': name,
+          'display_name': name,
+          'role': 'customer',
         }),
       );
 

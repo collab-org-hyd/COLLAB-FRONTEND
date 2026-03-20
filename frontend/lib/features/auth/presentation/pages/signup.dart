@@ -12,13 +12,19 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  bool _isInfluencer = false;
 
   @override
   void dispose() {
+    _usernameController.dispose();
     _nameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -50,20 +56,47 @@ class _SignupScreenState extends State<SignupScreen> {
 
               const SizedBox(height: 8),
 
-              /// Subtitle
-              Text(
-                'Sign up with ${widget.userMail}',
-                style: AppTextStyles.body,
-                textAlign: TextAlign.center,
+              const SizedBox(height: 40),
+
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: AppTextStyles.body,
+                  filled: true,
+                  fillColor: AppColors.inputFill,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 16),
 
               /// Name Field
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Full Name',
+                  labelText: 'Display Name',
+                  labelStyle: AppTextStyles.body,
+                  filled: true,
+                  fillColor: AppColors.inputFill,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              /// Email Field
+              TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email',
                   labelStyle: AppTextStyles.body,
                   filled: true,
                   fillColor: AppColors.inputFill,
@@ -110,6 +143,36 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
 
+              const SizedBox(height: 16),
+
+              /// Role Switch
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppColors.inputFill,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'I am an Influencer',
+                      style: AppTextStyles.body,
+                    ),
+                    Switch(
+                      value: _isInfluencer,
+                      onChanged: (value) {
+                        setState(() {
+                          _isInfluencer = value;
+                        });
+                      },
+                      activeColor: AppColors.primary,
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 24),
 
               /// Signup Button
@@ -125,7 +188,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   onPressed: () async {
                     // Validate passwords match
-                    if (_passwordController.text != _confirmPasswordController.text) {
+                    print("sign up pressed");
+                    if (_passwordController.text !=
+                        _confirmPasswordController.text) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Passwords do not match.'),
@@ -153,7 +218,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     }
 
                     final response = await ApiClient.registerUser(
-                      email: widget.userMail,
+                      username: _usernameController.text,
+                      email: _emailController.text,
                       password: _passwordController.text,
                       name: _nameController.text,
                     );
@@ -184,8 +250,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text(
-                              'Failed to sign up. Please try again.'),
+                          content: Text('Failed to sign up. Please try again.'),
                         ),
                       );
                     }
