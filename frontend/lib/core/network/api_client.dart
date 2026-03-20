@@ -82,4 +82,51 @@ class ApiClient {
       return null;
     }
   }
+
+  static Future<Map<String, dynamic>?> registerUser({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
+    print('registerUser called');
+    final url = Uri.parse("$BASE_URL$REGISTER_ENDPOINT");
+
+    try {
+      print('inside register API');
+      print('Full URL: $url');
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+          'name': name,
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        print("API Response: $data");
+        return data;
+      } else {
+        print("API Error: ${response.statusCode}");
+        print("Response body: ${response.body}");
+        return jsonDecode(response.body);
+      }
+    } on http.ClientException catch (e, stackTrace) {
+      print("HTTP ClientException: $e");
+      print("Stack trace: $stackTrace");
+      return null;
+    } on FormatException catch (e, stackTrace) {
+      print("JSON FormatException: $e");
+      print("Stack trace: $stackTrace");
+      return null;
+    } catch (e, stackTrace) {
+      print("Request failed: $e");
+      print("Error type: ${e.runtimeType}");
+      print("Stack trace: $stackTrace");
+      return null;
+    }
+  }
 }

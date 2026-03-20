@@ -3,6 +3,7 @@ import 'package:frontend/core/constants/common_style.dart';
 import 'package:frontend/core/constants/api_constants.dart';
 import 'package:frontend/core/network/api_client.dart';
 import 'package:frontend/features/auth/presentation/pages/existingUserLogin.dart';
+import 'package:frontend/features/auth/presentation/pages/signup.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -92,23 +93,58 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (response != null) {
                       print('response is not null');
                       print('this is the status:${response['status']}');
-                      final bool exists = response['status'] ?? false;
+                      final bool exists = response['status'];
 
                       if (exists) {
                         // User exists - navigate to existing user login
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ExistingUserLoginScreen(userMail: _emailController.text),
+                            builder: (context) => ExistingUserLoginScreen(
+                                userMail: _emailController.text),
                           ),
                         );
                       } else {
-                        // New user - show message or navigate to registration
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Email not registered. Please sign up.')),
+                        // New user - show dialog with Sign Up and Try Again options
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Email Not Found'),
+                              content: const Text(
+                                  'This email is not registered. Would you like to sign up or try again?'),
+                              actions: [
+                                Column(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("Try Again",
+                                          backgroundColor: Colors.black,
+                                          style: AppTextStyles.button),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        // Navigate to signup screen
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SignupScreen(
+                                                userMail:
+                                                    _emailController.text),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text('Sign Up'),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            );
+                          },
                         );
                       }
                     } else {
