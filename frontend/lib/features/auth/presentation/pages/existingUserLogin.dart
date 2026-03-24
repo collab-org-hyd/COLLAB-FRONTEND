@@ -123,20 +123,85 @@ class _ExistingUserLoginScreenState extends State<ExistingUserLoginScreen> {
                         );
                       } else {
                         // Show error message
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(response['message'] ??
-                                'Login failed. Please try again.'),
-                          ),
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Center(
+                                  child: Text(
+                                'Login Failed',
+                              )),
+                              content: const Text(
+                                  'This email is not registered. Would you like to sign up or try again?'),
+                              actions: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .stretch, // Makes buttons full width
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: Text("Try Again",
+                                            style: AppTextStyles.button),
+                                      ),
+                                      const SizedBox(height: 8),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          },
                         );
                       }
                     } else {
                       // API error
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                              'Failed to login. Please check your credentials.'),
-                        ),
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Center(
+                                child: Text(
+                              'Incorrect Password',
+                            )),
+                            content: const Text(
+                                'This password is incorrect.Would you like to try again?'),
+                            actions: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .stretch, // Makes buttons full width
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        _passwordController.clear();
+                                        Navigator.of(context).pop();
+                                      },
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                      child: Text("Try Again",
+                                          style: AppTextStyles.button),
+                                    ),
+                                    const SizedBox(height: 8),
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        },
                       );
                     }
                   },

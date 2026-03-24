@@ -13,7 +13,7 @@ class AppStrings {
 
   // Auth - Login
   static const String loginTitle = 'Login or Signup';
-  static const String emailLabel = 'Email or phone number';
+  static const String emailLabel = 'Email';
   static const String continueBtn = 'Continue';
   static const String orContinueWith = 'or continue with';
 
