@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/constants/common_style.dart';
 import 'package:frontend/core/network/api_client.dart';
+import 'package:frontend/features/auth/presentation/pages/replaceForgottenPassword.dart';
 import 'package:frontend/features/home/presentation/pages/home_page.dart';
+import 'package:frontend/features/auth/presentation/pages/verifyOTP.dart';
 
 class ExistingUserLoginScreen extends StatefulWidget {
   final String userMail;
@@ -213,8 +215,119 @@ class _ExistingUserLoginScreenState extends State<ExistingUserLoginScreen> {
 
               /// Forgot Password
               TextButton(
+                //OTP
+                // onPressed: () async {
+                //   final response =
+                //       await ApiClient.requestOTP(email: widget.userMail);
+                //   if (response != null) {
+                //     // Check if otp was successfully requested (adjust based on your API response)
+                //     final bool success = response['success'] ??
+                //         response['status'] == true ??
+                //         response['token'] != null ??
+                //         false;
+
+                //     if (success) {
+                //       // Navigate to home page with response data
+                //       Navigator.pushReplacement(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) =>
+                //               VerifyOTP(userMail: widget.userMail),
+                //         ),
+                //       );
+                //     } else {
+                //       // Show error message
+                //       showDialog(
+                //         context: context,
+                //         barrierDismissible: false,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //             title: const Center(
+                //                 child: Text(
+                //               'Login Failed',
+                //             )),
+                //             content: const Text(
+                //                 'This email is not registered. Would you like to sign up or try again?'),
+                //             actions: [
+                //               Padding(
+                //                 padding: const EdgeInsets.symmetric(
+                //                     horizontal: 16.0, vertical: 8.0),
+                //                 child: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment
+                //                       .stretch, // Makes buttons full width
+                //                   children: [
+                //                     TextButton(
+                //                       onPressed: () {
+                //                         Navigator.of(context).pop();
+                //                       },
+                //                       style: TextButton.styleFrom(
+                //                         backgroundColor: Colors.black,
+                //                         foregroundColor: Colors.white,
+                //                       ),
+                //                       child: Text("Try Again",
+                //                           style: AppTextStyles.button),
+                //                     ),
+                //                     const SizedBox(height: 8),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           );
+                //         },
+                //       );
+                //     }
+                //   } else {
+                //     // API error
+                //     showDialog(
+                //       context: context,
+                //       barrierDismissible: false,
+                //       builder: (BuildContext context) {
+                //         return AlertDialog(
+                //           title: const Center(
+                //               child: Text(
+                //             'Incorrect Password',
+                //           )),
+                //           content: const Text(
+                //               'This password is incorrect.Would you like to try again?'),
+                //           actions: [
+                //             Padding(
+                //               padding: const EdgeInsets.symmetric(
+                //                   horizontal: 16.0, vertical: 8.0),
+                //               child: Column(
+                //                 crossAxisAlignment: CrossAxisAlignment
+                //                     .stretch, // Makes buttons full width
+                //                 children: [
+                //                   TextButton(
+                //                     onPressed: () {
+                //                       _passwordController.clear();
+                //                       Navigator.of(context).pop();
+                //                     },
+                //                     style: TextButton.styleFrom(
+                //                       backgroundColor: Colors.black,
+                //                       foregroundColor: Colors.white,
+                //                     ),
+                //                     child: Text("Try Again",
+                //                         style: AppTextStyles.button),
+                //                   ),
+                //                   const SizedBox(height: 8),
+                //                 ],
+                //               ),
+                //             )
+                //           ],
+                //         );
+                //       },
+                //     );
+                //   }
+                // },
                 onPressed: () {
-                  // TODO: Implement forgot password
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Replaceforgottenpassword(
+                        userMail: widget.userMail,
+                      ),
+                    ),
+                  );
                 },
                 child: Text(
                   'Forgot Password?',
