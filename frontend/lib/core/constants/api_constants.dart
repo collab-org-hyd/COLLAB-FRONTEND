@@ -11,3 +11,4 @@ const String REGISTER_ENDPOINT = "/auth/register";
 const String REQUEST_OTP = "/auth/forgot-password/request-otp";
 const String VERIFY_OTP = "/auth/forgot-password/verify-otp";
 const String REPLACE_PASSWORD = "/auth/forgot-password/reset";
+const String REPLACE_PASSWORD_DIRECT = "/auth/forgot-password/reset-direct";

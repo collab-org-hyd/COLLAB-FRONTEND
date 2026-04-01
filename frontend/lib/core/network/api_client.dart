@@ -137,13 +137,12 @@ class ApiClient {
   static Future<Map<String, dynamic>?> replaceforgottenpasswordAPICall({
     required String email,
     required String new_password,
-    required String reset_token,
   }) async {
     print('Replace Forgotten Password called');
-    final url = Uri.parse("$BASE_URL$REGISTER_ENDPOINT");
+    final url = Uri.parse("$BASE_URL$REPLACE_PASSWORD_DIRECT");
 
     try {
-      print('inside register API');
+      print('inside reset password API');
       print('Full URL: $url');
 
       final response = await http.post(
@@ -151,7 +150,7 @@ class ApiClient {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
-          'password': password,
+          'new_password': new_password,
         }),
       );
 

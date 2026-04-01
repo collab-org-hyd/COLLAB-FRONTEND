@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/constants/common_style.dart';
 import 'package:frontend/core/network/api_client.dart';
+import 'package:frontend/features/auth/presentation/pages/login.dart';
 import 'package:frontend/features/home/presentation/pages/home_page.dart';
 
 class Replaceforgottenpassword extends StatefulWidget {
@@ -133,8 +134,8 @@ class _ReplaceforgottenpasswordState extends State<Replaceforgottenpassword> {
 
                     final response =
                         await ApiClient.replaceforgottenpasswordAPICall(
-                      username: widget.userMail,
-                      password: _passwordController.text,
+                      email: widget.userMail,
+                      new_password: _passwordController.text,
                     );
 
                     if (response != null) {
@@ -148,8 +149,7 @@ class _ReplaceforgottenpasswordState extends State<Replaceforgottenpassword> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                HomePage(responseData: response),
+                            builder: (context) => LoginScreen(),
                           ),
                         );
                       } else {
@@ -169,7 +169,7 @@ class _ReplaceforgottenpasswordState extends State<Replaceforgottenpassword> {
                       );
                     }
                   },
-                  child: Text('Sign Up', style: AppTextStyles.button),
+                  child: Text('Reset Password', style: AppTextStyles.button),
                 ),
               ),
 
