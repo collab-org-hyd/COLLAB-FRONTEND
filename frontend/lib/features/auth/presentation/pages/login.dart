@@ -1,0 +1,252 @@
+import 'package:flutter/material.dart';
+import 'package:frontend/core/constants/common_style.dart';
+import 'package:frontend/core/constants/api_constants.dart';
+import 'package:frontend/core/network/api_client.dart';
+import 'package:frontend/features/auth/presentation/pages/existingUserLogin.dart';
+import 'package:frontend/features/auth/presentation/pages/signup.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.scaffold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 50),
+
+              /// App Logo
+              Image.asset(
+                AppAssets.logoBlackOnWhite,
+                height: 100,
+                width: 100,
+              ),
+
+              const SizedBox(height: 16),
+
+              /// App Name — Genty font
+              Text(AppStrings.appName, style: AppTextStyles.appName),
+
+              const SizedBox(height: 4),
+
+              Text(AppStrings.appTagline, style: AppTextStyles.tagline),
+
+              const SizedBox(height: 30),
+
+              /// Page Title
+              Text(AppStrings.loginTitle, style: AppTextStyles.heading),
+
+              const SizedBox(height: 30),
+
+              /// Email Field
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: AppStrings.emailLabel,
+                  labelStyle: AppTextStyles.body,
+                  filled: true,
+                  fillColor: AppColors.inputFill,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              /// Continue Button
+              SizedBox(
+                width: double.infinity,
+                height: 55,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  onPressed: () async {
+                    print('Email: ${_emailController.text}');
+                    final response =
+                        await ApiClient.checkEmail(_emailController.text);
+
+                    if (response != null) {
+                      print('response is not null');
+                      print('this is the status:${response['status']}');
+                      final bool exists = response['status'];
+
+                      if (exists) {
+                        // User exists - navigate to existing user login
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExistingUserLoginScreen(
+                                userMail: _emailController.text),
+                          ),
+                        );
+                      } else {
+                        // New user - show dialog with Sign Up and Try Again options
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Center(
+                                  child: Text(
+                                'Email Not Found',
+                              )),
+                              content: const Text(
+                                  'This email is not registered. Would you like to sign up or try again?'),
+                              actions: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .stretch, // Makes buttons full width
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: Text("Try Again",
+                                            style: AppTextStyles.button),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SignupScreen(
+                                                      userMail: _emailController
+                                                          .text),
+                                            ),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: const Text('Sign Up'),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    } else {
+                      // API error
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'Failed to check email. Please try again.')),
+                      );
+                    }
+                  },
+                  child:
+                      Text(AppStrings.continueBtn, style: AppTextStyles.button),
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              /// Divider
+              Row(
+                children: [
+                  Expanded(child: Divider(color: AppColors.border)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(AppStrings.orContinueWith,
+                        style: AppTextStyles.dividerLabel),
+                  ),
+                  Expanded(child: Divider(color: AppColors.border)),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              /// Social Buttons
+              Row(
+                children: [
+                  /// Google
+                  Expanded(
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.g_mobiledata, size: 28),
+                          const SizedBox(width: 8),
+                          Text(AppStrings.googleLabel,
+                              style: AppTextStyles.socialLabel),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 16),
+
+                  /// Apple
+                  Expanded(
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.apple),
+                          const SizedBox(width: 8),
+                          Text(AppStrings.appleLabel,
+                              style: AppTextStyles.socialLabel),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
