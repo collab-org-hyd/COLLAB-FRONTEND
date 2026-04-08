@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/constants/common_style.dart';
 import 'package:frontend/features/home/presentation/pages/header.dart';
+import 'package:frontend/features/home/presentation/pages/footer.dart';
 
 class HomePage extends StatelessWidget {
   final Map<String, dynamic> responseData;
@@ -76,29 +77,12 @@ class HomePage extends StatelessWidget {
 
                     const Spacer(),
 
-                    /// Logout Button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                        },
-                        child: Text('Logout', style: AppTextStyles.button),
-                      ),
-                    ),
-
                     const SizedBox(height: 30),
                   ],
                 ),
               ),
             ),
+            const Footer(),
           ],
         ),
       ),
