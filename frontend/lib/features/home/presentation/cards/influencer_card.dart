@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/constants/common_style.dart';
+import 'package:frontend/features/home/presentation/cards/influencer_tag_card.dart';
 
 class InfluencerCard extends StatelessWidget {
   final String name;
@@ -73,12 +74,6 @@ class InfluencerCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    category,
-                    style: AppTextStyles.body.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
                   if (followerCount != null) ...[
                     const SizedBox(height: 4),
                     Text(
@@ -89,6 +84,23 @@ class InfluencerCard extends StatelessWidget {
                       ),
                     ),
                   ],
+                  const SizedBox(height: 43),
+                  Container(
+                    height: 75,
+                    width: 300,
+                    child: SingleChildScrollView(
+                      // 👈 allows vertical scroll if needed
+                      child: Wrap(
+                        spacing: 12, // horizontal space
+                        runSpacing: 12, // vertical space
+                        children: List.generate(15, (index) {
+                          return InfluencerTagCard(
+                            tag: '#tagtag ${index + 1}',
+                          );
+                        }),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
