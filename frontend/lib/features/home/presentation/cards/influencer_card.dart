@@ -44,23 +44,42 @@ class InfluencerCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Profile Image
-            Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.inputFill,
-              ),
-              child: profileImageUrl != null
-                  ? ClipOval(
-                      child: Image.network(
-                        profileImageUrl!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _placeholderIcon(),
-                      ),
-                    )
-                  : _placeholderIcon(),
+            Column(
+              children: [
+                Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.inputFill,
+                  ),
+                  child: profileImageUrl != null
+                      ? ClipOval(
+                          child: Image.network(
+                            profileImageUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => _placeholderIcon(),
+                          ),
+                        )
+                      : _placeholderIcon(),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: 110,
+                  height: 20,
+                  color: Colors.red,
+                  child: Text("12312 followers"),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: 110,
+                  height: 20,
+                  color: Colors.red,
+                  child: Text("12312 followers"),
+                ),
+              ],
             ),
+
             const SizedBox(width: 16),
             // Name, Category, Followers
             Expanded(
